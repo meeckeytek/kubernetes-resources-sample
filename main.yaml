@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: story-app
+spec:
+  selector:
+    name: story-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: story-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      name: story-app
+  template:
+    metadata:
+      labels:
+        name: story-app
+    spec:
+      containers:
+        - name: story-app
+          image: meeckey/story-app
+          volumeMounts:
+            - mountPath: /app/story
+              name: story-app-volume
+      volumes:
+        - name: story-app-volume
+          persistentVolumeClaim:
+            claimName: host-pvc
