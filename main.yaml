@@ -28,6 +28,9 @@ spec:
       containers:
         - name: story-app
           image: meeckey/story-app
+          env:
+            - name: STORY_FOLDER
+              value: 'story'
           volumeMounts:
             - mountPath: /app/story
               name: story-app-volume
